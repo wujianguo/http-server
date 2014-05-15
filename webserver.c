@@ -122,7 +122,7 @@ static void on_alloc(uv_handle_t* handle, size_t suggested_size, uv_buf_t* buf)
 static void on_read(uv_stream_t* stream, ssize_t nread, const uv_buf_t* buf)
 {
     HTTP_RESPONSE_OBJ* http_resp = (HTTP_RESPONSE_OBJ*)stream->data;
-    http_parser_execute(&http_resp->parser, &parser_settings, buf->base, nread);
+    http_parser_execute(&http_resp->request->parser, &parser_settings, buf->base, nread);
     free(buf->base);
 }
 
@@ -138,8 +138,8 @@ static void on_connect(uv_stream_t* server_handle, int status)
     http_resp->request = req;
 
     uv_tcp_init(uv_default_loop(), &http_resp->request->socked);
-    http_parser_init(&http_resp->parser, HTTP_REQUEST);
-    http_resp->parser.data = http_resp;
+    http_parser_init(&http_resp->request->parser, HTTP_REQUEST);
+    http_resp->request->parser.data = http_resp;
     http_resp->request->socked.data = http_resp;
 
     uv_accept(server_handle, (uv_stream_t*)&http_resp->request->socked);
@@ -157,8 +157,8 @@ static void start_server()
 
 int main() 
 {
-    test_request();
-    // start_server();
+    // test_request();
+    start_server();
     uv_run(uv_default_loop(), UV_RUN_DEFAULT);
     return 0;
 }

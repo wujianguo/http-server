@@ -29,6 +29,7 @@ typedef struct _tagHttpRequestObj
 	http_complete_cb on_complete;
 
 	uv_tcp_t		socked;
+	http_parser		parser;
 }HTTP_REQUEST_OBJ;
 
 typedef struct _tagHttpResponseObj
