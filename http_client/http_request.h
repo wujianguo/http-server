@@ -13,7 +13,8 @@ struct _tagHttpRequestObj;
 struct _tagHttpResponseObj;
 typedef void (*http_complete_cb)(struct _tagHttpResponseObj* resp, int errcode);
 typedef void (*http_on_body_cb)(struct _tagHttpResponseObj* resp, const char* body, size_t length);
-typedef void (*http_on_alloc_for_body_cb)(struct _tagHttpResponseObj* resp, size_t suggested_size, uv_buf_t* buf);
+// typedef void (*http_on_alloc_for_body_cb)(struct _tagHttpResponseObj* resp, size_t suggested_size, uv_buf_t* buf);
+typedef void (*http_finish_cb)(struct _tagHttpResponseObj* resp);
 
 typedef struct _tagHttpRequestObj
 {
@@ -24,9 +25,10 @@ typedef struct _tagHttpRequestObj
 	char*	body;
 	void*	data;
 
-	http_on_alloc_for_body_cb on_alloc_for_body;
 	http_on_body_cb on_body;
 	http_complete_cb on_complete;
+
+	uv_tcp_t		socked;
 }HTTP_REQUEST_OBJ;
 
 typedef struct _tagHttpResponseObj
@@ -37,12 +39,17 @@ typedef struct _tagHttpResponseObj
 	unsigned int 	header_num;
 	HTTP_HEADER	headers[20];
 
-	uv_tcp_t		socked;
 	uv_connect_t	connect;
 	int 			cancel;
-	int 			complete;
+	char*			buf;
+	int 			errcode;
+	http_finish_cb	on_finish;
 }HTTP_RESPONSE_OBJ;
 
-char* http_request_buf(HTTP_REQUEST_OBJ* req, unsigned int* len);
+void add_http_range_request_head(HTTP_REQUEST_OBJ* req, uint64_t pos, uint64_t length);
+
+HTTP_RESPONSE_OBJ* http_client_request(HTTP_REQUEST_OBJ* req);
+
+void http_client_cancel(HTTP_RESPONSE_OBJ* resp);
 
 #endif
