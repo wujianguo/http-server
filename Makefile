@@ -7,6 +7,7 @@ SRC_FILES := \
 	http_handler/http_handler.c \
 	http_handler/main_handler.c \
 	http_handler/not_found_handler.c \
+	http_handler/play_handler.c \
 
 OBJECTS =  $(subst .c,.o,$(SRC_FILES))
 DESPS = $(subst .c,.d,$(SRC_FILES))
