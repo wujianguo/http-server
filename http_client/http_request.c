@@ -68,9 +68,11 @@ void add_http_range_request_head(HTTP_REQUEST_OBJ* req, uint64_t pos, uint64_t l
 	else
 	    snprintf(t, 64, "bytes=%llu-", pos);
 
-    strncpy(req->headers[req->header_num].field, "Range", strlen("Range"));
-    strncpy(req->headers[req->header_num].value, t, strlen(t));
-    ++req->header_num;
+	ADD_HEADER(req, "Range", t);
+
+    // strncpy(req->headers[req->header_num].field, "Range", strlen("Range"));
+    // strncpy(req->headers[req->header_num].value, t, strlen(t));
+    // ++req->header_num;
 }
 
 static int on_status(http_parser* parser, const char *at, size_t length)

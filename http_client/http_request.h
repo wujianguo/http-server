@@ -46,6 +46,11 @@ typedef struct _tagHttpResponseObj
 	http_finish_cb	on_finish;
 }HTTP_RESPONSE_OBJ;
 
+#define ADD_HEADER(obj, f, v)	    strncpy(obj->headers[obj->header_num].field, f, strlen(f)); \
+									strncpy(obj->headers[obj->header_num].value, v, strlen(v)); \
+									++obj->header_num; \
+
+
 void add_http_range_request_head(HTTP_REQUEST_OBJ* req, uint64_t pos, uint64_t length);
 
 HTTP_RESPONSE_OBJ* http_client_request(HTTP_REQUEST_OBJ* req);

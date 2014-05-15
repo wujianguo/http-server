@@ -157,8 +157,8 @@ static void start_server()
 
 int main() 
 {
-    // test_request();
-    start_server();
+    test_request();
+    // start_server();
     uv_run(uv_default_loop(), UV_RUN_DEFAULT);
     return 0;
 }

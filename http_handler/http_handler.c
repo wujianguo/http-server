@@ -2,13 +2,13 @@
 #include "main_handler.h"
 #include "not_found_handler.h"
 #include "play_handler.h"
-#include <stdio.h>
-#define LOG_DEBUG(format, ...) printf("[%s:%d] " format "\n",__FUNCTION__, __LINE__,##__VA_ARGS__)
 
 #define APPLICATIONS_MAP(XX)			\
 	XX(handle_main, "/")				\
 	XX(handle_play, "/play")			\
 
+#include <stdio.h>
+#define LOG_DEBUG(format, ...) printf("[%s:%d] " format "\n",__FUNCTION__, __LINE__,##__VA_ARGS__)
 
 typedef void (*handler_func)(struct _tagHttpResponseObj* resp);
 
