@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "not_found_handler.h"
+#include "applications.h"
 
 #include <stdio.h>
 #define LOG_DEBUG(format, ...) printf("[%s:%d] " format "\n",__FUNCTION__, __LINE__,##__VA_ARGS__)

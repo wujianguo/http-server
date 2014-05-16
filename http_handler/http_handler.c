@@ -1,11 +1,5 @@
 #include "http_handler.h"
-#include "main_handler.h"
-#include "not_found_handler.h"
-#include "play_handler.h"
-
-#define APPLICATIONS_MAP(XX)			\
-	XX(handle_main, "/")				\
-	XX(handle_play, "/play")			\
+#include "applications.h"
 
 #include <stdio.h>
 #define LOG_DEBUG(format, ...) printf("[%s:%d] " format "\n",__FUNCTION__, __LINE__,##__VA_ARGS__)
