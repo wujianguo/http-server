@@ -23,6 +23,31 @@
 		812E28691C362B490007F852 /* utility.h in Headers */ = {isa = PBXBuildFile; fileRef = 812E285C1C362B490007F852 /* utility.h */; };
 		812E286A1C362B490007F852 /* utility.h in Headers */ = {isa = PBXBuildFile; fileRef = 812E285C1C362B490007F852 /* utility.h */; };
 		812E286B1C362B700007F852 /* libhttp-server-mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 812E283F1C362AB10007F852 /* libhttp-server-mac.a */; };
+		812E29C11C363C4D0007F852 /* http_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 812E29BF1C363C4D0007F852 /* http_parser.c */; };
+		812E29C21C363C4D0007F852 /* http_parser.c in Sources */ = {isa = PBXBuildFile; fileRef = 812E29BF1C363C4D0007F852 /* http_parser.c */; };
+		812E29C31C363C4D0007F852 /* http_parser.h in Headers */ = {isa = PBXBuildFile; fileRef = 812E29C01C363C4D0007F852 /* http_parser.h */; };
+		812E29C41C363C4D0007F852 /* http_parser.h in Headers */ = {isa = PBXBuildFile; fileRef = 812E29C01C363C4D0007F852 /* http_parser.h */; };
+		812E29F51C363D020007F852 /* libuv_mac.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 812E29F41C363D020007F852 /* libuv_mac.a */; };
+		812E2A0C1C363D6A0007F852 /* tree.h in Headers */ = {isa = PBXBuildFile; fileRef = 812E29FA1C363D6A0007F852 /* tree.h */; };
+		812E2A0D1C363D6A0007F852 /* tree.h in Headers */ = {isa = PBXBuildFile; fileRef = 812E29FA1C363D6A0007F852 /* tree.h */; };
+		812E2A0E1C363D6A0007F852 /* uv-aix.h in Headers */ = {isa = PBXBuildFile; fileRef = 812E29FB1C363D6A0007F852 /* uv-aix.h */; };
+		812E2A0F1C363D6A0007F852 /* uv-aix.h in Headers */ = {isa = PBXBuildFile; fileRef = 812E29FB1C363D6A0007F852 /* uv-aix.h */; };
+		812E2A101C363D6A0007F852 /* uv-bsd.h in Headers */ = {isa = PBXBuildFile; fileRef = 812E29FC1C363D6A0007F852 /* uv-bsd.h */; };
+		812E2A111C363D6A0007F852 /* uv-bsd.h in Headers */ = {isa = PBXBuildFile; fileRef = 812E29FC1C363D6A0007F852 /* uv-bsd.h */; };
+		812E2A121C363D6A0007F852 /* uv-darwin.h in Headers */ = {isa = PBXBuildFile; fileRef = 812E29FD1C363D6A0007F852 /* uv-darwin.h */; };
+		812E2A131C363D6A0007F852 /* uv-darwin.h in Headers */ = {isa = PBXBuildFile; fileRef = 812E29FD1C363D6A0007F852 /* uv-darwin.h */; };
+		812E2A141C363D6A0007F852 /* uv-errno.h in Headers */ = {isa = PBXBuildFile; fileRef = 812E29FE1C363D6A0007F852 /* uv-errno.h */; };
+		812E2A151C363D6A0007F852 /* uv-errno.h in Headers */ = {isa = PBXBuildFile; fileRef = 812E29FE1C363D6A0007F852 /* uv-errno.h */; };
+		812E2A161C363D6A0007F852 /* uv-linux.h in Headers */ = {isa = PBXBuildFile; fileRef = 812E29FF1C363D6A0007F852 /* uv-linux.h */; };
+		812E2A171C363D6A0007F852 /* uv-linux.h in Headers */ = {isa = PBXBuildFile; fileRef = 812E29FF1C363D6A0007F852 /* uv-linux.h */; };
+		812E2A1A1C363D6A0007F852 /* uv-threadpool.h in Headers */ = {isa = PBXBuildFile; fileRef = 812E2A011C363D6A0007F852 /* uv-threadpool.h */; };
+		812E2A1B1C363D6A0007F852 /* uv-threadpool.h in Headers */ = {isa = PBXBuildFile; fileRef = 812E2A011C363D6A0007F852 /* uv-threadpool.h */; };
+		812E2A1C1C363D6A0007F852 /* uv-unix.h in Headers */ = {isa = PBXBuildFile; fileRef = 812E2A021C363D6A0007F852 /* uv-unix.h */; };
+		812E2A1D1C363D6A0007F852 /* uv-unix.h in Headers */ = {isa = PBXBuildFile; fileRef = 812E2A021C363D6A0007F852 /* uv-unix.h */; };
+		812E2A1E1C363D6A0007F852 /* uv-version.h in Headers */ = {isa = PBXBuildFile; fileRef = 812E2A031C363D6A0007F852 /* uv-version.h */; };
+		812E2A1F1C363D6A0007F852 /* uv-version.h in Headers */ = {isa = PBXBuildFile; fileRef = 812E2A031C363D6A0007F852 /* uv-version.h */; };
+		812E2A221C363D6A0007F852 /* uv.h in Headers */ = {isa = PBXBuildFile; fileRef = 812E2A051C363D6A0007F852 /* uv.h */; };
+		812E2A231C363D6A0007F852 /* uv.h in Headers */ = {isa = PBXBuildFile; fileRef = 812E2A051C363D6A0007F852 /* uv.h */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -49,6 +74,19 @@
 		812E285A1C362B490007F852 /* queue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = queue.h; sourceTree = "<group>"; };
 		812E285B1C362B490007F852 /* utility.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = utility.c; sourceTree = "<group>"; };
 		812E285C1C362B490007F852 /* utility.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = utility.h; sourceTree = "<group>"; };
+		812E29BF1C363C4D0007F852 /* http_parser.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = http_parser.c; path = "http-parser/http_parser.c"; sourceTree = "<group>"; };
+		812E29C01C363C4D0007F852 /* http_parser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = http_parser.h; path = "http-parser/http_parser.h"; sourceTree = "<group>"; };
+		812E29F41C363D020007F852 /* libuv_mac.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libuv_mac.a; path = libuv/libuv_mac.a; sourceTree = "<group>"; };
+		812E29FA1C363D6A0007F852 /* tree.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = tree.h; sourceTree = "<group>"; };
+		812E29FB1C363D6A0007F852 /* uv-aix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "uv-aix.h"; sourceTree = "<group>"; };
+		812E29FC1C363D6A0007F852 /* uv-bsd.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "uv-bsd.h"; sourceTree = "<group>"; };
+		812E29FD1C363D6A0007F852 /* uv-darwin.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "uv-darwin.h"; sourceTree = "<group>"; };
+		812E29FE1C363D6A0007F852 /* uv-errno.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "uv-errno.h"; sourceTree = "<group>"; };
+		812E29FF1C363D6A0007F852 /* uv-linux.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "uv-linux.h"; sourceTree = "<group>"; };
+		812E2A011C363D6A0007F852 /* uv-threadpool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "uv-threadpool.h"; sourceTree = "<group>"; };
+		812E2A021C363D6A0007F852 /* uv-unix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "uv-unix.h"; sourceTree = "<group>"; };
+		812E2A031C363D6A0007F852 /* uv-version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "uv-version.h"; sourceTree = "<group>"; };
+		812E2A051C363D6A0007F852 /* uv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uv.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +102,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				812E29F51C363D020007F852 /* libuv_mac.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -107,6 +146,8 @@
 		812E284B1C362AF10007F852 /* sources */ = {
 			isa = PBXGroup;
 			children = (
+				812E29C51C363CD00007F852 /* libuv */,
+				812E29BE1C363C2E0007F852 /* http-parser */,
 				812E28561C362B490007F852 /* http_connection.c */,
 				812E28571C362B490007F852 /* http_connection.h */,
 				812E28581C362B490007F852 /* http_server.c */,
@@ -118,6 +159,42 @@
 			name = sources;
 			sourceTree = "<group>";
 		};
+		812E29BE1C363C2E0007F852 /* http-parser */ = {
+			isa = PBXGroup;
+			children = (
+				812E29BF1C363C4D0007F852 /* http_parser.c */,
+				812E29C01C363C4D0007F852 /* http_parser.h */,
+			);
+			name = "http-parser";
+			sourceTree = "<group>";
+		};
+		812E29C51C363CD00007F852 /* libuv */ = {
+			isa = PBXGroup;
+			children = (
+				812E29F61C363D6A0007F852 /* include */,
+				812E29F41C363D020007F852 /* libuv_mac.a */,
+			);
+			name = libuv;
+			sourceTree = "<group>";
+		};
+		812E29F61C363D6A0007F852 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				812E29FA1C363D6A0007F852 /* tree.h */,
+				812E29FB1C363D6A0007F852 /* uv-aix.h */,
+				812E29FC1C363D6A0007F852 /* uv-bsd.h */,
+				812E29FD1C363D6A0007F852 /* uv-darwin.h */,
+				812E29FE1C363D6A0007F852 /* uv-errno.h */,
+				812E29FF1C363D6A0007F852 /* uv-linux.h */,
+				812E2A011C363D6A0007F852 /* uv-threadpool.h */,
+				812E2A021C363D6A0007F852 /* uv-unix.h */,
+				812E2A031C363D6A0007F852 /* uv-version.h */,
+				812E2A051C363D6A0007F852 /* uv.h */,
+			);
+			name = include;
+			path = libuv/include;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -125,10 +202,21 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				812E2A1C1C363D6A0007F852 /* uv-unix.h in Headers */,
+				812E2A0E1C363D6A0007F852 /* uv-aix.h in Headers */,
+				812E2A1E1C363D6A0007F852 /* uv-version.h in Headers */,
 				812E28651C362B490007F852 /* queue.h in Headers */,
+				812E2A141C363D6A0007F852 /* uv-errno.h in Headers */,
+				812E2A101C363D6A0007F852 /* uv-bsd.h in Headers */,
+				812E2A161C363D6A0007F852 /* uv-linux.h in Headers */,
+				812E29C31C363C4D0007F852 /* http_parser.h in Headers */,
 				812E285F1C362B490007F852 /* http_connection.h in Headers */,
+				812E2A221C363D6A0007F852 /* uv.h in Headers */,
 				812E28631C362B490007F852 /* http_server.h in Headers */,
+				812E2A0C1C363D6A0007F852 /* tree.h in Headers */,
+				812E2A121C363D6A0007F852 /* uv-darwin.h in Headers */,
 				812E28691C362B490007F852 /* utility.h in Headers */,
+				812E2A1A1C363D6A0007F852 /* uv-threadpool.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -136,10 +224,21 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				812E2A1D1C363D6A0007F852 /* uv-unix.h in Headers */,
+				812E2A0F1C363D6A0007F852 /* uv-aix.h in Headers */,
+				812E2A1F1C363D6A0007F852 /* uv-version.h in Headers */,
 				812E28661C362B490007F852 /* queue.h in Headers */,
+				812E2A151C363D6A0007F852 /* uv-errno.h in Headers */,
+				812E2A111C363D6A0007F852 /* uv-bsd.h in Headers */,
+				812E2A171C363D6A0007F852 /* uv-linux.h in Headers */,
+				812E29C41C363C4D0007F852 /* http_parser.h in Headers */,
 				812E28601C362B490007F852 /* http_connection.h in Headers */,
+				812E2A231C363D6A0007F852 /* uv.h in Headers */,
 				812E28641C362B490007F852 /* http_server.h in Headers */,
+				812E2A0D1C363D6A0007F852 /* tree.h in Headers */,
+				812E2A131C363D6A0007F852 /* uv-darwin.h in Headers */,
 				812E286A1C362B490007F852 /* utility.h in Headers */,
+				812E2A1B1C363D6A0007F852 /* uv-threadpool.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -251,6 +350,7 @@
 			files = (
 				812E28671C362B490007F852 /* utility.c in Sources */,
 				812E28611C362B490007F852 /* http_server.c in Sources */,
+				812E29C11C363C4D0007F852 /* http_parser.c in Sources */,
 				812E285D1C362B490007F852 /* http_connection.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -261,6 +361,7 @@
 			files = (
 				812E28681C362B490007F852 /* utility.c in Sources */,
 				812E28621C362B490007F852 /* http_server.c in Sources */,
+				812E29C21C363C4D0007F852 /* http_parser.c in Sources */,
 				812E285E1C362B490007F852 /* http_connection.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -365,6 +466,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				EXECUTABLE_PREFIX = lib;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libuv",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -373,6 +478,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				EXECUTABLE_PREFIX = lib;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libuv",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -414,6 +523,7 @@
 				812E283A1C362AA30007F852 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		812E28401C362AB10007F852 /* Build configuration list for PBXNativeTarget "http-server-mac" */ = {
 			isa = XCConfigurationList;
@@ -422,6 +532,7 @@
 				812E28421C362AB10007F852 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		812E28481C362ABC0007F852 /* Build configuration list for PBXNativeTarget "http-server-ios" */ = {
 			isa = XCConfigurationList;
@@ -430,6 +541,7 @@
 				812E284A1C362ABC0007F852 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
