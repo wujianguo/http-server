@@ -9,7 +9,6 @@
 #ifndef http_server_h
 #define http_server_h
 
-#include "uv.h"
 #include "queue.h"
 #include "http_connection.h"
 

@@ -8,7 +8,7 @@
 
 #ifndef utility_h
 #define utility_h
-#include "uv.h"
+#include "libuv/include/uv.h"
 void parse_range(const char *buf, size_t buf_len, int64_t *pos, int64_t *end);
 
 #endif /* utility_h */

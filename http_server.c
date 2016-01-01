@@ -8,7 +8,6 @@
 
 #include <stdlib.h>
 #include "http_server.h"
-#include "uv.h"
 
 
 const static char not_found_response[] = "HTTP/1.1 404 Not Found\r\n"

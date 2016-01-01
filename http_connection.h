@@ -44,8 +44,8 @@
 ((type *) ((char *) (ptr) - ((char *) &((type *) 0)->field)))
 
 
-#include "uv.h"
-#include "http_parser.h"
+#include "libuv/include/uv.h"
+#include "http-parser/http_parser.h"
 #include "queue.h"
 
 
