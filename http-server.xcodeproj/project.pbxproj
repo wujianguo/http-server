@@ -48,6 +48,7 @@
 		812E2A1F1C363D6A0007F852 /* uv-version.h in Headers */ = {isa = PBXBuildFile; fileRef = 812E2A031C363D6A0007F852 /* uv-version.h */; };
 		812E2A221C363D6A0007F852 /* uv.h in Headers */ = {isa = PBXBuildFile; fileRef = 812E2A051C363D6A0007F852 /* uv.h */; };
 		812E2A231C363D6A0007F852 /* uv.h in Headers */ = {isa = PBXBuildFile; fileRef = 812E2A051C363D6A0007F852 /* uv.h */; };
+		812E2A941C3697F80007F852 /* libuv_ios.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 812E2A931C3697F80007F852 /* libuv_ios.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -87,6 +88,7 @@
 		812E2A021C363D6A0007F852 /* uv-unix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "uv-unix.h"; sourceTree = "<group>"; };
 		812E2A031C363D6A0007F852 /* uv-version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "uv-version.h"; sourceTree = "<group>"; };
 		812E2A051C363D6A0007F852 /* uv.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = uv.h; sourceTree = "<group>"; };
+		812E2A931C3697F80007F852 /* libuv_ios.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libuv_ios.a; path = libuv/libuv_ios.a; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +112,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				812E2A941C3697F80007F852 /* libuv_ios.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -172,6 +175,7 @@
 			isa = PBXGroup;
 			children = (
 				812E29F61C363D6A0007F852 /* include */,
+				812E2A931C3697F80007F852 /* libuv_ios.a */,
 				812E29F41C363D020007F852 /* libuv_mac.a */,
 			);
 			name = libuv;
@@ -490,6 +494,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				EXECUTABLE_PREFIX = lib;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libuv",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 			};
@@ -499,6 +507,10 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				EXECUTABLE_PREFIX = lib;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libuv",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = iphoneos;
 			};
