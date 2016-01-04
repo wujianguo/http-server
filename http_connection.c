@@ -193,6 +193,12 @@ static void on_close(uv_handle_t* handle) {
     }
     YOU_LOG_DEBUG("%p destroy", conn);
     // todo: free header node
+    QUEUE *q;
+    struct http_header_field_value *head;
+    QUEUE_FOREACH(q, &conn->header.headers) {
+        head = QUEUE_DATA(q, struct http_header_field_value, node);
+        free(head);
+    }
     free(conn);
 }
 
