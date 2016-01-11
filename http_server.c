@@ -94,6 +94,7 @@ static void on_send(http_connection *conn, void *user_data) {
 
 static void on_header_complete(http_connection *conn, struct http_header *header, void *user_data) {
     http_request_imp *imp = (http_request_imp*)user_data;
+    imp->req.header = header;
     imp->handler = find_handler(header->url_buf, &header->url, imp->sx->config);
     if (imp->handler->on_header_complete) {
         imp->handler->on_header_complete(&imp->req);

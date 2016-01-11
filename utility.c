@@ -67,3 +67,45 @@ void parse_range(const char *buf, size_t buf_len, int64_t *pos, int64_t *end) {
  check_range_parser("bytes=500-", 500, -1);
  }
  */
+
+
+void get_query_argument(struct http_parser_url *url, char *url_buf, char *key, size_t key_len, size_t *off, size_t *len) {
+    *off = 0;
+    *len = 0;
+    if (!(url->field_set & (1 << UF_QUERY)))
+        return;
+
+    uint16_t left_query_len = url->field_data[UF_QUERY].len;
+    size_t cur_off = url->field_data[UF_QUERY].off;
+    int query_start = 1;
+    while (left_query_len > key_len) {
+        if (url_buf[cur_off] == '&') {
+            query_start = 1;
+            cur_off++;
+            left_query_len--;
+            continue;
+        }
+        
+        if (query_start && strncmp(url_buf + cur_off, key, key_len) == 0 && url_buf[cur_off + key_len] == '=') {
+            *off = cur_off + key_len + 1;
+            cur_off = *off;
+            left_query_len--;
+            break;
+        }
+        query_start = 0;
+        cur_off++;
+        left_query_len--;
+    }
+    if (*off == 0)
+        return;
+
+    while (left_query_len > 0 && url_buf[cur_off] != '&') {
+        *len = *len + 1;
+        left_query_len--;
+        cur_off++;
+    }
+}
+
+int is_response_content_encoding_gzip(struct http_header *header) {
+    return 0;
+}

@@ -344,3 +344,11 @@ void free_http_connection(http_connection *conn) {
     // todo: check if free all
 }
 
+void http_connection_stop_read(http_connection *conn) {
+    uv_read_stop(&conn->handle.stream);
+}
+
+void http_connecton_start_read(http_connection *conn) {
+    uv_read_start(&conn->handle.stream, on_read_alloc, on_read);
+}
+

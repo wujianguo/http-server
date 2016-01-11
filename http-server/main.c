@@ -101,7 +101,25 @@ static void on_timer_expire(uv_timer_t *handle) {
 }
 
 
+#include "utility.h"
 int main(int argc, char **argv) {
+    
+//    char url_buf[] = "http://baidu.com/snds/ene?key=value";
+//    char url_buf[] = "http://baidu.com/snds/ene?s=nene&key=value";
+    char url_buf[] = "http://baidu.com/snds/ene?key=ss";
+//    char url_buf[] = "http://baidu.com/snds/ene?key=value&val=sns";
+    struct http_parser_url url = {0};
+    http_parser_url_init(&url);
+    http_parser_parse_url(url_buf, strlen(url_buf), 0, &url);
+    char key[] = "key";
+    size_t off = 0;
+    size_t len = 0;
+    get_query_argument(&url, url_buf, key, strlen(key), &off, &len);
+    char value[1024] = {0};
+    memcpy(value, url_buf+off, len);
+    printf("off:%zu, len:%zu, %s\n", off, len, value);
+    return 0;
+    
     
     http_server_config config;
     

@@ -90,5 +90,9 @@ int http_connection_send(http_connection *conn, const char *buf, size_t len);
 
 void free_http_connection(http_connection *conn);
 
+void http_connection_stop_read(http_connection *conn);
+
+void http_connecton_start_read(http_connection *conn);
+
 
 #endif /* http_connection_h */
