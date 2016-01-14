@@ -92,7 +92,9 @@ static struct http_connection_settings settings = {
     on_send,
     on_header_complete,
     on_body,
-    on_message_complete
+    on_message_complete,
+    NULL,
+    NULL
 };
 
 static void on_timer_expire(uv_timer_t *handle) {

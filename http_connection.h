@@ -78,6 +78,8 @@ struct http_connection_settings {
     void (*on_header_complete)(http_connection *conn, struct http_header *header, void *user_data);
     void (*on_body)(http_connection *conn, const char *at, size_t length, void *user_data);
     void (*on_message_complete)(http_connection *conn, void *user_data);
+    void (*on_chunk_header)(http_connection *conn, void *user_data);
+    void (*on_chunk_complete)(http_connection *conn, void *user_data);
 };
 
 http_connection* create_http_connection(uv_loop_t *loop, struct http_connection_settings settings, void *user_data);

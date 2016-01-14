@@ -168,6 +168,24 @@ static int on_message_complete(http_parser *parser) {
     return 0;
 }
 
+static int on_chunk_header(http_parser *parser) {
+    http_connection *conn = (http_connection*)parser->data;
+    YOU_LOG_DEBUG("%p, %llu", conn, parser->content_length);
+    if (conn->settings.on_chunk_header) {
+        conn->settings.on_chunk_header(conn, conn->user_data);
+    }
+    return 0;
+}
+
+static int on_chunk_complete(http_parser *parser) {
+    http_connection *conn = (http_connection*)parser->data;
+    YOU_LOG_DEBUG("%p", conn);
+    if (conn->settings.on_chunk_complete) {
+        conn->settings.on_chunk_complete(conn, conn->user_data);
+    }
+    return 0;
+}
+
 
 static struct http_parser_settings parser_setting = {
     on_message_begin,
@@ -178,8 +196,8 @@ static struct http_parser_settings parser_setting = {
     on_headers_complete,
     on_body,
     on_message_complete,
-    NULL,
-    NULL
+    on_chunk_header,
+    on_chunk_complete
 };
 
 
