@@ -107,5 +107,16 @@ void get_query_argument(struct http_parser_url *url, char *url_buf, char *key, s
 }
 
 int is_response_content_encoding_gzip(struct http_header *header) {
+    QUEUE *q = NULL;
+    struct http_header_field_value *hd = NULL;
+    QUEUE_FOREACH(q, &header->headers) {
+        hd = QUEUE_DATA(q, struct http_header_field_value, node);
+        if (strcmp(hd->field, "Content-Encoding")==0) {
+            if (strcmp(hd->value, "gzip")==0) {
+                return 1;
+            }
+            return 0;
+        }
+    }
     return 0;
 }

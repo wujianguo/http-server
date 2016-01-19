@@ -33,11 +33,18 @@ static void not_found_handler_on_send(http_request *req) {
     req->complete(req);
 }
 
+static void not_found_hander_on_error(http_request *req, int err_code) {
+    req->complete(req);
+}
+
 http_handler_setting not_found_handler = {
     not_found_handler_on_header_complete,
     not_found_handler_on_body,
     not_found_handler_on_message_complete,
     not_found_handler_on_send,
+    NULL,
+    NULL,
+    not_found_hander_on_error,
     {0},
     {0}
 };
@@ -84,6 +91,14 @@ static http_handler_setting* find_handler(const char *url_buf, struct http_parse
     return &not_found_handler;
 }
 
+static void on_error(http_connection *conn, void *user_data, int err_code) {
+    http_request_imp *imp = (http_request_imp*)user_data;
+    ASSERT(imp->handler != NULL);
+    if (imp->handler->on_error) {
+        imp->handler->on_error(&imp->req, err_code);
+    }
+}
+
 static void on_send(http_connection *conn, void *user_data) {
     http_request_imp *imp = (http_request_imp*)user_data;
     ASSERT(imp->handler != NULL);
@@ -117,14 +132,31 @@ static void on_message_complete(http_connection *conn, void *user_data) {
     }
 }
 
+static void on_chunk_header(http_connection *conn, void *user_data) {
+    http_request_imp *imp = (http_request_imp*)user_data;
+    ASSERT(imp->handler != NULL);
+    if (imp->handler->on_chunk_header) {
+        imp->handler->on_chunk_header(&imp->req);
+    }
+}
+
+static void on_chunk_complete(http_connection *conn, void *user_data) {
+    http_request_imp *imp = (http_request_imp*)user_data;
+    ASSERT(imp->handler != NULL);
+    if (imp->handler->on_chunk_complete) {
+        imp->handler->on_chunk_complete(&imp->req);
+    }
+}
+
 static struct http_connection_settings settings = {
+    on_error,
     NULL,
     on_send,
     on_header_complete,
     on_body,
     on_message_complete,
-    NULL,
-    NULL
+    on_chunk_header,
+    on_chunk_complete
 };
 
 static void on_sess_complete(http_request *req) {

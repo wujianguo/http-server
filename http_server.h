@@ -34,6 +34,9 @@ typedef struct {
     handler_callback_data on_body;
     handler_callback on_message_complete;
     handler_callback on_send;
+    handler_callback on_chunk_header;
+    handler_callback on_chunk_complete;
+    void (*on_error)(http_request *req, int err_code);
     char path[128];
     QUEUE node;
 } http_handler_setting;

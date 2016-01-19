@@ -48,12 +48,13 @@
 #include "http-parser/http_parser.h"
 #include "queue.h"
 
-
+#define MAX_NAME_LEN 1024
 #define MAX_HOST_LEN 128
 #define MAX_URL_LEN 1024
 #define MAX_HTTP_FIELD_LEN 56
 #define MAX_HTTP_VALUE_LEN 1024
 #define MAX_REQUEST_HEADER_LEN 2048
+#define MAX_RESPONSE_HEADER_LEN 2048
 
 typedef struct http_connection http_connection;
 
@@ -73,6 +74,7 @@ struct http_header {
 };
 
 struct http_connection_settings {
+    void (*on_error)(http_connection *conn, void *user_data, int err_code);
     void (*on_connect)(http_connection *conn, void *user_data);
     void (*on_send)(http_connection *conn, void *user_data);
     void (*on_header_complete)(http_connection *conn, struct http_header *header, void *user_data);

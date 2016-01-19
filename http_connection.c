@@ -68,13 +68,13 @@ typedef struct http_connection {
 static int on_message_begin(http_parser *parser) {
     http_connection *conn = (http_connection*)parser->data;
     conn->state = s_message_begin;
-    YOU_LOG_DEBUG("%p", conn);
+    YOU_LOG_DEBUG("conn: %p", conn);
     return 0;
 }
 
 static int on_url(http_parser *parser, const char *at, size_t length) {
     http_connection *conn = (http_connection*)parser->data;
-    YOU_LOG_DEBUG("%p", conn);
+    YOU_LOG_DEBUG("conn: %p", conn);
     if (conn->state != s_url) {
         memset(conn->header.url_buf, 0, sizeof(conn->header.url_buf));
     }
@@ -85,14 +85,14 @@ static int on_url(http_parser *parser, const char *at, size_t length) {
 
 static int on_status(http_parser *parser, const char *at, size_t length) {
     http_connection *conn = (http_connection*)parser->data;
-    YOU_LOG_DEBUG("%p", conn);
+    YOU_LOG_DEBUG("conn: %p", conn);
     conn->state = s_status;
     return 0;
 }
 
 static int on_header_field(http_parser *parser, const char *at, size_t length) {
     http_connection *conn = (http_connection*)parser->data;
-    YOU_LOG_DEBUG("%p", conn);
+    YOU_LOG_DEBUG("conn: %p", conn);
     if (conn->state != s_header_field || conn->state != s_header_value) {
         http_parser_url_init(&conn->header.url);
         http_parser_parse_url(conn->header.url_buf, strlen(conn->header.url_buf), 1, &conn->header.url);
@@ -114,7 +114,7 @@ static int on_header_field(http_parser *parser, const char *at, size_t length) {
 
 static int on_header_value(http_parser *parser, const char *at, size_t length) {
     http_connection *conn = (http_connection*)parser->data;
-    YOU_LOG_DEBUG("%p", conn);
+    YOU_LOG_DEBUG("conn: %p", conn);
     QUEUE *q = QUEUE_HEAD(&conn->header.headers);
     struct http_header_field_value *head = QUEUE_DATA(q, struct http_header_field_value, node);
     strncat(head->value, at, length);
@@ -139,8 +139,9 @@ static void log_http_header(struct http_header *header) {
 
 static int on_headers_complete(http_parser *parser) {
     http_connection *conn = (http_connection*)parser->data;
-    YOU_LOG_DEBUG("%p", conn);
+    YOU_LOG_DEBUG("conn: %p ************header************", conn);
     log_http_header(&conn->header);
+    YOU_LOG_DEBUG("conn: %p **********header end************", conn);
     conn->state = s_header_complete;
     if (conn->settings.on_header_complete) {
         conn->settings.on_header_complete(conn, &conn->header, conn->user_data);
@@ -150,7 +151,7 @@ static int on_headers_complete(http_parser *parser) {
 
 static int on_body(http_parser *parser, const char *at, size_t length) {
     http_connection *conn = (http_connection*)parser->data;
-    YOU_LOG_DEBUG("%p", conn);
+    YOU_LOG_DEBUG("conn: %p", conn);
     conn->state = s_body;
     if (conn->settings.on_body) {
         conn->settings.on_body(conn, at, length, conn->user_data);
@@ -160,7 +161,7 @@ static int on_body(http_parser *parser, const char *at, size_t length) {
 
 static int on_message_complete(http_parser *parser) {
     http_connection *conn = (http_connection*)parser->data;
-    YOU_LOG_DEBUG("%p", conn);
+    YOU_LOG_DEBUG("conn: %p", conn);
     conn->state = s_message_complete;
     if (conn->settings.on_message_complete) {
         conn->settings.on_message_complete(conn, conn->user_data);
@@ -170,7 +171,7 @@ static int on_message_complete(http_parser *parser) {
 
 static int on_chunk_header(http_parser *parser) {
     http_connection *conn = (http_connection*)parser->data;
-    YOU_LOG_DEBUG("%p, %llu", conn, parser->content_length);
+    YOU_LOG_DEBUG("conn: %p, %llu", conn, parser->content_length);
     if (conn->settings.on_chunk_header) {
         conn->settings.on_chunk_header(conn, conn->user_data);
     }
@@ -179,7 +180,7 @@ static int on_chunk_header(http_parser *parser) {
 
 static int on_chunk_complete(http_parser *parser) {
     http_connection *conn = (http_connection*)parser->data;
-    YOU_LOG_DEBUG("%p", conn);
+    YOU_LOG_DEBUG("conn: %p", conn);
     if (conn->settings.on_chunk_complete) {
         conn->settings.on_chunk_complete(conn, conn->user_data);
     }
@@ -209,20 +210,40 @@ static void on_close(uv_handle_t* handle) {
     if (conn->send_buf) {
         free(conn->send_buf);
     }
-    YOU_LOG_DEBUG("%p destroy", conn);
+    YOU_LOG_DEBUG("conn: %p destroy", conn);
     // todo: free header node
     QUEUE *q;
     struct http_header_field_value *head;
+    while (!QUEUE_EMPTY(&conn->header.headers)) {
+        q = QUEUE_HEAD(&conn->header.headers);
+        head = QUEUE_DATA(q, struct http_header_field_value, node);
+        QUEUE_REMOVE(q);
+        free(head);
+    }
+    /*
     QUEUE_FOREACH(q, &conn->header.headers) {
         head = QUEUE_DATA(q, struct http_header_field_value, node);
         free(head);
     }
+    */
     free(conn);
 }
 
+static void on_error(http_connection *conn, int err_code) {
+    YOU_LOG_DEBUG("conn %p, error:%d", conn, err_code);
+    conn->callbacking = 1;
+    if (conn->settings.on_error) {
+        conn->settings.on_error(conn, conn->user_data, err_code);
+    }
+    conn->callbacking = 0;
+    if (conn->destroy) {
+        free_http_connection(conn);
+    }
+}
+
 static void on_read_alloc(uv_handle_t* handle, size_t suggested_size, uv_buf_t* buf) {
-    YOU_LOG_DEBUG("");
     http_connection *conn = CONTAINER_OF(handle, http_connection, handle);
+    YOU_LOG_DEBUG("conn: %p", conn);
     ASSERT(conn->state >= s_connected && conn->state < s_closing);
     buf->base = malloc(suggested_size);
     buf->len = suggested_size;
@@ -230,8 +251,8 @@ static void on_read_alloc(uv_handle_t* handle, size_t suggested_size, uv_buf_t* 
 }
 
 static void on_read(uv_stream_t* stream, ssize_t nread, const uv_buf_t* buf) {
-    YOU_LOG_DEBUG("");
     http_connection *conn = CONTAINER_OF(stream, http_connection, handle.stream);
+    YOU_LOG_DEBUG("conn: %p", conn);
     ASSERT(conn->state >= s_connected && conn->state < s_closing);
     
     conn->callbacking = 1;
@@ -247,9 +268,9 @@ static void on_read(uv_stream_t* stream, ssize_t nread, const uv_buf_t* buf) {
 }
 
 static void on_write_done(uv_write_t *req, int status) {
-    YOU_LOG_DEBUG("");
-    ASSERT(status==0);
     http_connection *conn = CONTAINER_OF(req, http_connection, write_req);
+    YOU_LOG_DEBUG("conn: %p, status:%d", conn, status);
+    if (status != 0) return on_error(conn, status);
     ASSERT(conn->state >= s_connected && conn->state < s_closing);
     free(conn->send_buf);
     conn->send_buf = NULL;
@@ -259,9 +280,9 @@ static void on_write_done(uv_write_t *req, int status) {
 }
 
 static void on_connect(uv_connect_t* req, int status) {
-    YOU_LOG_DEBUG("");
-    ASSERT(status==0);
     http_connection *conn = CONTAINER_OF(req, http_connection, t.connect_req);
+    YOU_LOG_DEBUG("conn: %p, status:%d", conn, status);
+    if (status != 0) return on_error(conn, status);
     ASSERT(conn->state == s_connecting);
     conn->state = s_connected;
     uv_read_start(&conn->handle.stream, on_read_alloc, on_read);
@@ -272,8 +293,8 @@ static void on_connect(uv_connect_t* req, int status) {
 
 static void on_get_addrinfo(uv_getaddrinfo_t *req, int status, struct addrinfo *addrs) {
     http_connection *conn = CONTAINER_OF(req, http_connection, t.addrinfo_req);
+    YOU_LOG_DEBUG("conn: %p, status:%d", conn, status);
     ASSERT(conn->state == s_connecting);
-    ASSERT(status == 0); // todo: check status
     if (status == 0) {
         /* todo: FIXME(bnoordhuis) Should try all addresses. */
         if (addrs->ai_family == AF_INET) {
@@ -283,6 +304,9 @@ static void on_get_addrinfo(uv_getaddrinfo_t *req, int status, struct addrinfo *
         } else {
             UNREACHABLE();
         }
+    } else {
+        uv_freeaddrinfo(addrs);
+        return on_error(conn, status);
     }
     
     uv_freeaddrinfo(addrs);
@@ -308,7 +332,9 @@ static http_connection* malloc_http_connection(uv_loop_t *loop, struct http_conn
 }
 
 http_connection* create_http_connection(uv_loop_t *loop, struct http_connection_settings settings, void *user_data) {
-    return malloc_http_connection(loop, &settings, user_data, HTTP_RESPONSE);
+    http_connection* conn = malloc_http_connection(loop, &settings, user_data, HTTP_RESPONSE);
+    YOU_LOG_DEBUG("conn: %p", conn);
+    return conn;
 }
 
 http_connection* create_passive_http_connection(uv_stream_t *server, struct http_connection_settings settings, void *user_data) {
@@ -317,6 +343,7 @@ http_connection* create_passive_http_connection(uv_stream_t *server, struct http
     CHECK(0 == uv_tcp_init(server->loop, &conn->handle.tcp));
     CHECK(0 == uv_accept(server, &conn->handle.stream));
     uv_read_start(&conn->handle.stream, on_read_alloc, on_read);
+    YOU_LOG_DEBUG("conn: %p", conn);
     return conn;
 }
 
@@ -337,11 +364,13 @@ int http_connection_connect(http_connection *conn, const char host[MAX_HOST_LEN]
     
     char port_str[16] = {0};
     snprintf(port_str, 16, "%u", port);
+    YOU_LOG_DEBUG("conn: %p, %s:%u", conn, host, port);
     err = uv_getaddrinfo(conn->loop, &conn->t.addrinfo_req, on_get_addrinfo, host, port_str, &hints);
     return err;
 }
 
 int http_connection_send(http_connection *conn, const char *buf, size_t len) {
+    YOU_LOG_DEBUG("conn: %p", conn);
     ASSERT(conn->send_buf == NULL);
     conn->send_buf = (char*)malloc(len);
     memcpy(conn->send_buf, buf, len);
@@ -354,19 +383,23 @@ int http_connection_send(http_connection *conn, const char *buf, size_t len) {
 
 void free_http_connection(http_connection *conn) {
     if (conn->callbacking) {
+        YOU_LOG_DEBUG("conn: %p callbacking", conn);
         conn->destroy = 1;
         return;
     }
+    YOU_LOG_DEBUG("conn: %p close", conn);
     conn->state = s_closing;
     uv_close(&conn->handle.handle, on_close);
     // todo: check if free all
 }
 
 void http_connection_stop_read(http_connection *conn) {
+    YOU_LOG_DEBUG("conn: %p", conn);
     uv_read_stop(&conn->handle.stream);
 }
 
 void http_connecton_start_read(http_connection *conn) {
+    YOU_LOG_DEBUG("conn: %p", conn);
     uv_read_start(&conn->handle.stream, on_read_alloc, on_read);
 }
 
