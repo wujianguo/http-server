@@ -133,13 +133,13 @@ static void log_http_header(struct http_header *header) {
     QUEUE *q;
     QUEUE_FOREACH(q, &header->headers) {
         head = QUEUE_DATA(q, struct http_header_field_value, node);
-        YOU_LOG_DEBUG("%s: %s", head->field, head->value);
+        YOU_LOG_DEBUG("%p %s: %s", head, head->field, head->value);
     }
 }
 
 static int on_headers_complete(http_parser *parser) {
     http_connection *conn = (http_connection*)parser->data;
-    YOU_LOG_DEBUG("conn: %p ************header************", conn);
+    YOU_LOG_DEBUG("conn: %p ************header %p************", conn, &conn->header);
     log_http_header(&conn->header);
     YOU_LOG_DEBUG("conn: %p **********header end************", conn);
     conn->state = s_header_complete;
@@ -254,6 +254,7 @@ static void on_read(uv_stream_t* stream, ssize_t nread, const uv_buf_t* buf) {
     http_connection *conn = CONTAINER_OF(stream, http_connection, handle.stream);
     YOU_LOG_DEBUG("conn: %p", conn);
     ASSERT(conn->state >= s_connected && conn->state < s_closing);
+    if (nread<0) on_error(conn, 4);
     
     conn->callbacking = 1;
     CHECK(nread == http_parser_execute(&conn->header.parser, &parser_setting, buf->base, nread));
@@ -271,7 +272,8 @@ static void on_write_done(uv_write_t *req, int status) {
     http_connection *conn = CONTAINER_OF(req, http_connection, write_req);
     YOU_LOG_DEBUG("conn: %p, status:%d", conn, status);
     if (status != 0) return on_error(conn, status);
-    ASSERT(conn->state >= s_connected && conn->state < s_closing);
+    ASSERT(conn->state >= s_connected && conn->state <= s_closing);
+    if (conn->state == s_closing) return;
     free(conn->send_buf);
     conn->send_buf = NULL;
     if (conn->settings.on_send) {
@@ -398,7 +400,7 @@ void http_connection_stop_read(http_connection *conn) {
     uv_read_stop(&conn->handle.stream);
 }
 
-void http_connecton_start_read(http_connection *conn) {
+void http_connection_start_read(http_connection *conn) {
     YOU_LOG_DEBUG("conn: %p", conn);
     uv_read_start(&conn->handle.stream, on_read_alloc, on_read);
 }
