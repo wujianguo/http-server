@@ -146,6 +146,8 @@ static int on_headers_complete(http_parser *parser) {
     if (conn->settings.on_header_complete) {
         conn->settings.on_header_complete(conn, &conn->header, conn->user_data);
     }
+    if (conn->destroy)
+        return HPE_CB_headers_complete;
     return 0;
 }
 
